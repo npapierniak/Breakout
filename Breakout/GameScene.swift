@@ -152,7 +152,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
     }
-
+    
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             let location = touch.location (in: self)
@@ -162,15 +162,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     func didBegin(_ contact: SKPhysicsContact) {
-        if contact.bodyA.node?.name == "brick" || contact.bodyB.node?.name == "brick"
-        {
-            print("You win!")
-            brick.removeFromParent()
-            ball.removeFromParent()
+        if contact.bodyA.node?.name == "brick" || contact.bodyB.node?.name == "brick" {
+            gameOver (winner: true)
         }
-        if contact.bodyA.node?.name == "loseZone" || contact.bodyB.node?.name == "loseZone" {
-            print("You lose!")
-            ball.removeFromParent()
+        if contact.bodyA.node?.name == "loseZone" ||
+            contact.bodyB.node?.name == "loseZone"{
+            gameOver(winner: false)
+        }
+    }
+    func gameOver (winner: Bool) {
+        playingGame = false
+        playLabel.alpha = 1
+        resetGame()
+        if winner {
+            playLabel.text = "You win! Tap to play again"
+        }
+        else {
+            playLabel.text = "You lose! Tap to play again"
         }
     }
 }
