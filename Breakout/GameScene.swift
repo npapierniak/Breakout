@@ -117,8 +117,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //now, figure the and spacing of each row of bricks
         let count = Int(frame.width) / 55 // bricks per row
         let xOffset = (Int(frame.width) - (count * 55)) / 2 + Int (frame.minX) + 25
-        let colors: [UIColor] = [.blue, .orange, .green]
-        for r in 0..<3{
+        let colors: [UIColor] = [.blue, .orange, .green, .purple]
+        for r in 0..<4{
             let y = Int (frame.maxY) - 65 - (r * 25)
             for i in 0..<count {
                 let x = i * 55 + xOffset
@@ -140,6 +140,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 }
                 else if brick.color == .orange {
                     brick.color = .green
+                }
+                else if brick.color == .green {
+                    brick.color = .purple
                 }
                 else {
                     brick.removeFromParent ()
