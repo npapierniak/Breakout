@@ -10,6 +10,7 @@ import GameplayKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     var ball = SKShapeNode()
+    var ball2 = SKShapeNode()
     var paddle = SKSpriteNode()
     var bricks = [SKSpriteNode]()
     var loseZone = SKSpriteNode()
@@ -25,6 +26,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         createBackground()
         resetGame()
+        resetGame2()
         updateLabels()
         makePaddle()
         makeBricks()
@@ -73,13 +75,37 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         addChild(ball)
     }
+    func makeBall2()
+    {
+        ball2.removeFromParent ()
+        ball2 = SKShapeNode(circleOfRadius: 10)
+        ball2.position = CGPoint (x: frame.midX, y: frame.midY)
+        ball2.strokeColor = .black
+        ball2.fillColor = .yellow
+        ball2.name = "ball2"
+        ball2.physicsBody = SKPhysicsBody(circleOfRadius: 10)
+        ball2.physicsBody?.isDynamic = false
+        ball2.physicsBody?.usesPreciseCollisionDetection = true
+        ball2.physicsBody?.friction = 0
+        ball2.physicsBody?.affectedByGravity = false
+        ball2.physicsBody?.restitution = 1
+        ball2.physicsBody?.linearDamping = 0
+        ball2.physicsBody?.contactTestBitMask = (ball2.physicsBody?.collisionBitMask)!
+        addChild(ball2)
+    }
     func resetGame() {
         // this stuff happens before each game starts
         makeBall()
     }
+    func resetGame2()
+    {
+        makeBall2()
+    }
     func kickBall() {
         ball.physicsBody?.isDynamic = true
         ball.physicsBody?.applyImpulse(CGVector(dx: Int.random(in: -5...5), dy:5))
+        ball2.physicsBody?.isDynamic = true
+        ball2.physicsBody?.applyImpulse(CGVector(dx: Int.random(in: -5...5), dy:5))
     }
     func updateLabels () {
         scoreLabel.text = "Score: \(score)"
@@ -210,7 +236,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                         playingGame = true
                         node.alpha = 0
                         score = 0
-                        lives = 3
+                        lives = 6
                         updateLabels()
                         kickBall()
                     }
@@ -231,6 +257,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         playingGame = false
         playLabel.alpha = 1
         resetGame()
+        resetGame2()
         if winner {
             playLabel.text = "You win! Tap to play again"
         }
