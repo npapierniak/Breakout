@@ -79,7 +79,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     func kickBall() {
         ball.physicsBody?.isDynamic = true
-        ball.physicsBody?.applyImpulse(CGVector(dx: 3, dy: 5))
+        ball.physicsBody?.applyImpulse(CGVector(dx: Int.random(in: -5...5), dy:5))
     }
     func updateLabels () {
         scoreLabel.text = "Score: \(score)"
@@ -127,7 +127,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     func didBegin(_ contact: SKPhysicsContact) {
-        //ask each brick, "Is it you?'
+        //ask each brick, "Is it you?"
+        ball.physicsBody!.velocity.dx *= CGFloat(1.02)
+        ball.physicsBody!.velocity.dy *= CGFloat(1.02)
         for brick in bricks {
             if contact.bodyA.node == brick ||
                 contact.bodyB.node == brick {
